@@ -1,0 +1,27 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Conferencing</title>
+    <style>
+        /* Add your CSS styles here for the layout */
+    </style>
+</head>
+<body>
+    <!-- Video conferencing interface -->
+    <div id="video-container">
+        <video id="local-video" autoplay muted></video>
+        <div id="remote-videos"></div>
+    </div>
+    
+    <!-- Textual Chat -->
+    <div id="chat-box">
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" />
+        <button id="send-btn">Send</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
