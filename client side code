@@ -1,0 +1,34 @@
+// app.js (client-side)
+const socket = io();
+
+// Get access to the user's camera and microphone
+navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then(stream => {
+        const localVideo = document.getElementById('local-video');
+        localVideo.srcObject = stream;
+        // Code to set up WebRTC connection using the obtained stream
+    })
+    .catch(err => console.error('Error accessing media devices:', err));
+
+// Handle textual chat
+const chatInput = document.getElementById('chat-input');
+const chatMessages = document.getElementById('chat-messages');
+
+document.getElementById('send-btn').addEventListener('click', () => {
+    const message = chatInput.value;
+    // Emit a socket.io event to send the message to the server
+    socket.emit('chatMessage', message);
+    // Display the sent message on the client-side interface
+    displayMessage('You', message);
+});
+
+socket.on('chatMessage', (username, message) => {
+    displayMessage(username, message);
+});
+
+function displayMessage(username, message) {
+    const newMessage = document.createElement('div');
+    newMessage.textContent = `${username}: ${message}`;
+    chatMessages.appendChild(newMessage);
+    chatInput.value = '';
+}
