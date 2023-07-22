@@ -1,0 +1,29 @@
+// server.js (server-side)
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
+
+// Serve the client-side files
+app.use(express.static(__dirname + '/public'));
+
+io.on('connection', socket => {
+    console.log('A user connected');
+
+    // Handle textual chat messages
+    socket.on('chatMessage', message => {
+        // Broadcast the message to all connected users
+        io.emit('chatMessage', 'User', message);
+    });
+
+    // Handle WebRTC signaling for audio-video communication
+    // Add your code here to handle WebRTC connections and signaling
+});
+
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
